@@ -4,6 +4,10 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+
+// This is a test
+//what is this going on
+
 @Entity
 @Table(name="customer12")
 public class Customer {
