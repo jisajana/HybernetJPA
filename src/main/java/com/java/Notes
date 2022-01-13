@@ -1,0 +1,144 @@
+            JPA
+        Java Persistence API
+              |              Application Programming Interface
+              |
+       Storing the JAva Object on the database as a ROW
+
+       SavingsAccount saObj = new SavingsAccount(10,"Jack",5000); <-- OBJECT
+
+       Address  addrObj1 = new Address("Sweet Home","West Avenue","NY","NY","US",45361, 10);
+       Address  addrObj2 = new Address("My Home","East Avenue","NJ","NJ","US",85361, 10);
+
+       OBJECTS IN JAVA ARE NOT ROWS
+       ROWS IN DATABASE ARE NOT OBJECTS
+
+       to persist saObj, addrObj1, addrObj2
+       we have to write insert queries
+
+       WHAT IS THE SYNTAX AND NATURE OF THESE QUERIES
+
+       insert into SAVINGS_ACCOUNT          values (?,?,?)
+       insert into SAVINGS_ACCOUNT_ADDRESS  values (?,?,?)
+       <--------->                          <------------>
+
+
+       worldwide thousands of developers would write the same insert queries
+       WHAT WOULD DIFFER IS THE TABLE NAMES AND THE COLUMNS AND THEIR COUNT
+
+       is it applicable to other quries too?
+       YES!!!
+
+       update
+       delete
+       select
+       select within select
+       select with join queries
+
+
+       WE NEED SOME AUTOMATION FOR THIS!!!!!!!!
+
+                DATABASE
+                |
+                JPA
+                |
+                JAVA APPLICATION [YOU NEED NOT WRITE JDBC BOILER PLATE CODE ]
+
+
+             WHAT YOU NEED IS JPA LIBRARIES
+
+         Initially this was used as an internal project by a team
+         - Hibernate <-- framework is launched <-- own set of libraries
+
+            ORM <-- Object Relational Mapping
+                    |       |           |
+                  java  dbTables        association
+
+               JPA is to standardise these libraries
+               |StringBasedMusicalInstrument
+               |
+         -----------------------------------------------
+         |              |           |       |       |
+      Hibernate     TopLink         ?       ?       ?
+      Guitar        Sitar       Violin
+
+
+
+
+               JPA Project
+
+
+
+                 src
+                   |
+             ----------------------------------
+             |              |           |
+             main           test        pom.xml 1
+             |                  |           -> hibernate jpa dependencies
+        ------------            java        -> database dependencies
+        |       |               |
+       java     resources       junit testcases
+        |       |
+        |       2 META-INF/persistence.xml <--dialer, db driver, Url, your db username/password
+        |                                   connection pooling
+        |                                   DDL strategy - create/update
+    3  Pojo mapped with TABLE                 show sql ? -- yes / no
+
+    4  EntityManagerFactory -> would read your persistence.xml
+       EntityManager - persist(), find(), merge(), delete(), createQuery()[HQL/JPQL]
+       EntityTransaction - commit  and rollback
+
+      spring with JDBC
+      spring with ORM [ jpa ]
+
+      1 - tables
+      2 - pojos [ now jpa pojos ]
+      3
+      4
+      5
+      6
+
+ * @Entity <-- managed by the primary key
+   @Table(name="MY_FRIENDS") <-- this is the table name associated with the class Friend
+   class Friend
+   {
+      * @Id <-- this is the declaration of the primary key
+        @Column(name="FRIEND_ID") <-- real column name of the table
+        int friendId; <-- java's field
+
+        @Column(name="FRIEND_NAME", length=30) <-- real column name of the table
+        String friendName;
+
+        @OneToMany <-- primary key /foreign key management is done by JPA
+        List<Address> addressList = new ArrayList<Address>();
+
+         |
+      -----------------
+      |     |       |
+      hsql  oracle  MS-SQL
+      |     |           |
+  varchar varchar2  nvarchar
+
+
+             int
+             |
+          ---------------
+          |     |       |
+          hsql  oracle  MS-SQL <-- unique set of keywords to make the tables
+          |     |        |
+        int    number   bigint
+   }
+
+       SAVINGS_ACCOUNT <-- table
+       PK
+       acno  name  balance
+       19    Jack  5000 <--- ROW
+
+       SAVINGS_ACCOUNT_ADDRESS                                              FK
+       area    street      city        state       country     zipcode      acno
+     1 Sweet    West        NY         NY           US          45361       19
+       Home     Avenue
+
+    2  My       East        NJ         NJ           US          85361       19
+       Home     Avenue
+
+
